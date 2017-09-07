@@ -1,6 +1,7 @@
 <template>
   <div class="my-index">
     <swipe></swipe>
+    <p v-for="i in 50" :key="i">{{i}}</p>
   </div>
 </template>
 

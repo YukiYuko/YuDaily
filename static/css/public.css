@@ -1,3 +1,51 @@
+.headline {
+  border-bottom: 4px solid #f6f6f6;
+}
+.headline-title.onlyheading {
+  margin: 20px 0;
+}
+.headline img {
+  max-width: 100%;
+  vertical-align: top;
+}
+.headline-background-link {
+  line-height: 2em;
+  position: relative;
+  display: block;
+  padding: 20px 45px 20px 20px !important;
+}
+.icon-arrow-right {
+  position: absolute;
+  top: 50%;
+  right: 20px;
+  background-image: url(http://static.daily.zhihu.com/img/share-icons.png);
+  background-repeat: no-repeat;
+  display: inline-block;
+  vertical-align: middle;
+  background-position: -70px -20px;
+  width: 10px;
+  height: 15px;
+  margin-top: -7.5px;
+}
+.headline-background .heading {
+  color: #999;
+  font-size: 15px!important;
+  margin-bottom: 8px;
+  line-height: 1em;
+}
+.headline-background .heading-content {
+  color: #444;
+  font-size: 17px!important;
+  line-height: 1.2em;
+}
+.headline-title {
+  line-height: 1.2em;
+  color: #000;
+  font-size: 22px;
+  margin: 20px 0 10px;
+  padding: 0 20px!important;
+  font-weight: bold;
+}
 .meta {
     white-space: nowrap;
     text-overflow: ellipsis;
