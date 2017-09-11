@@ -7,15 +7,20 @@
     </div>
     <div class="detail-from"></div>
     <div class="detail-body" v-html="this.data.body"></div>
+    <foot-bar></foot-bar>  
   </div>
 </template>
 <script>
 import axios from 'axios';
+import FootBar from '../components/FootBar.vue'
 export default {
   data() {
     return {
       data: {}
     };
+  },
+  components: {
+    FootBar
   },
   created() {
     this.fetchData();
@@ -45,8 +50,6 @@ export default {
     attachBodyContent: function(body) {
       return body.replace(/src="http\w{0,1}:\/\//g, 'src="https://images.weserv.nl/?url=');
     }
-  },
-  components: {
   }
 };
 </script>
@@ -54,6 +57,7 @@ export default {
 @import '../assets/base.less';
 @import '/static/css/public.css';
 .detail{
+    padding-bottom: @80px;
     .detail-head{ 
         height: @440px;position: relative;
         img{ width: 100%;height: 100%;object-fit: cover;}
