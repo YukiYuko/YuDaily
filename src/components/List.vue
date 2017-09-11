@@ -1,0 +1,141 @@
+<style scoped lang="less">
+  @import '../assets/base.less';
+  .list{ position: relative;}
+</style>
+<template>
+  <div class="list" ref="list">
+    <!-- <ul>
+        <li>
+            <a href="">aaaa</a>
+        </li>
+    </ul> -->
+    <scroll ref="scroll" :data="items" :scrollbar="scrollbarObj" :pullDownRefresh="pullDownRefreshObj" :pullUpLoad="pullUpLoadObj"
+              :startY="parseInt(startY)" @pullingDown="onPullingDown" @pullingUp="onPullingUp">
+        <swipe></swipe>
+      </scroll>
+  </div> 
+</template>
+
+<script>
+import Swipe from '../components/Swipe';
+import Scroll from '../components/scroll/scroll.vue'
+const _data = [
+    '我是第 1 行',
+    '我是第 2 行',
+    '我是第 3 行',
+    '我是第 4 行',
+    '我是第 5 行',
+    '我是第 6 行',
+    '我是第 7 行',
+    '我是第 8 行',
+    '我是第 9 行',
+    '我是第 10 行',
+    '我是第 11 行',
+    '我是第 12 行',
+    '我是第 13 行',
+    '我是第 14 行',
+    '我是第 15 行',
+    '我是第 16 行',
+    '我是第 17 行',
+    '我是第 18 行',
+    '我是第 19 行',
+    '我是第 20 行'
+  ]
+export default {
+  data() {
+    return {
+        scrollbar: true,
+        scrollbarFade: true,
+        pullDownRefresh: true,
+        pullDownRefreshThreshold: 90,
+        pullDownRefreshStop: 40,
+        pullUpLoad: true,
+        pullUpLoadThreshold: 0,
+        pullUpLoadMoreTxt: '加载更多',
+        pullUpLoadNoMoreTxt: '没有更多数据了',
+        startY: 0,
+        items: _data,
+        itemIndex: _data.length
+    }
+  },
+  watch: {
+    scrollbarObj() {
+      this.rebuildScroll()
+    },
+    pullDownRefreshObj() {
+      this.rebuildScroll()
+    },
+    pullUpLoadObj() {
+      this.rebuildScroll()
+    },
+    startY() {
+      this.rebuildScroll()
+    }
+  },
+  computed: {
+    scrollbarObj: function () {
+      return this.scrollbar ? {fade: this.scrollbarFade} : false
+    },
+    pullDownRefreshObj: function () {
+        return this.pullDownRefresh ? {
+            threshold: parseInt(this.pullDownRefreshThreshold),
+            stop: parseInt(this.pullDownRefreshStop)
+        } : false
+    },
+    pullUpLoadObj: function () {
+        return this.pullUpLoad ? {threshold: parseInt(this.pullUpLoadThreshold), txt: {more: this.pullUpLoadMoreTxt, noMore: this.pullUpLoadNoMoreTxt}} : false
+    }
+  },
+  components: {
+    Scroll,Swipe
+  },
+  mounted(){
+    this.$refs.list.style.height = window.screen.height+'px';
+  },
+  created() {
+      
+  },
+  methods: {
+    onPullingDown() {
+        // 模拟更新数据
+        console.log('pulling down and load data')
+        setTimeout(() => {
+          if (Math.random() > 0.5) {
+            // 如果有新数据
+            this.items.unshift('我是新数据: ' + +new Date())
+          } else {
+            // 如果没有新数据
+            this.$refs.scroll.forceUpdate()
+          }
+        }, 1000)
+    },
+    onPullingUp() {
+        // 更新数据
+        console.log('pulling up and load data')
+        setTimeout(() => {
+          if (Math.random() > 0.5) {
+            // 如果有新数据
+            let newPage = [
+              '我是第 ' + ++this.itemIndex + ' 行',
+              '我是第 ' + ++this.itemIndex + ' 行',
+              '我是第 ' + ++this.itemIndex + ' 行',
+              '我是第 ' + ++this.itemIndex + ' 行',
+              '我是第 ' + ++this.itemIndex + ' 行'
+            ]
+
+            this.items = this.items.concat(newPage)
+          } else {
+            // 如果没有新数据
+            this.$refs.scroll.forceUpdate()
+          }
+        }, 1000)
+    },
+    rebuildScroll() {
+        this.nextTick(() => {
+            this.$refs.scroll.destroy()
+            this.$refs.scroll.initScroll()
+        })
+    }
+  }
+};
+</script>

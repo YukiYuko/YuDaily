@@ -12,7 +12,7 @@
 <template>
   <div class="foot">
     <div class="footBar">
-      <router-link to=""><i class="iconfont icon-zuo"></i></router-link>
+      <router-link to="/"><i class="iconfont icon-zuo"></i></router-link>
       <router-link to=""><i class="iconfont icon-you"></i></router-link>
       <router-link to=""><i class="iconfont icon-zan"></i> <em>188</em> </router-link>
       <router-link to=""><i class="iconfont icon-fenxiang"  @click="show"></i></router-link>

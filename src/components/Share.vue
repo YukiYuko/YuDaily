@@ -76,6 +76,7 @@ export default {
   methods:{
     // 隐藏分享菜单事件
     cancel: function() {
+    //抛出一个事件给父组件
       this.$emit('cancel');
     }
   }

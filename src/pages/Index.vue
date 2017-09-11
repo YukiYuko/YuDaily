@@ -1,13 +1,12 @@
 <template>
   <div class="my-index">
-    <swipe></swipe>
-    <p v-for="i in 50" :key="i">{{i}}</p>
+    <list></list>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
-import Swipe from '../components/Swipe';
+import List from '../components/List';
 export default {
   name: 'index',
   data() {
@@ -16,7 +15,7 @@ export default {
     };
   },
   components: {
-    Swipe,
+    List
   },
   created() {
     
