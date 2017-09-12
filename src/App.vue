@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <side-bar></side-bar>
     <transition :name="transitionName" keep-alive>
       <router-view class="child-view"></router-view>
     </transition>
@@ -7,12 +8,16 @@
 </template>
 
 <script>
+ import SideBar from './components/SideBar';
 export default {
   name: 'app',
   data () {
     return {
       transitionName: 'slide-left'
     }
+  },
+  components: {
+    SideBar
   },
   // watch: {
   //   '$route' (to, from) {
@@ -40,8 +45,10 @@ export default {
 </script>
 
 <style lang="less">
+@import './assets/base.less';
 #app{ height: 100%;}
-.child-view{ transition: all .8s cubic-bezier(.55,0,.1,1);position: absolute;width: 100%;height: 100%;}
+.child-view{ transition: all .8s cubic-bezier(.55,0,.1,1);
+position: absolute;width: 100%;height: 100%;transform: translateX(@440px)}
 .slide-left-enter, .slide-right-leave-active {
   opacity: 0;
   -webkit-transform: translate(50px, 0);
