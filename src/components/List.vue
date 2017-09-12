@@ -1,49 +1,47 @@
 <style scoped lang="less">
   @import '../assets/base.less';
-  .list{ position: relative;}
+  .list{ 
+      height: 100%;position: relative;
+    .list-item{ 
+        position: relative;overflow: hidden;
+        background-color: #fff;
+        border-bottom: 1px solid #e7e7e7;
+        padding: @20px;
+        img{ width: @220px;height: @150px;float: left;object-fit: cover;}
+        .list-item-title{ margin-left: @240px;
+            h2{ font-size: @30px;line-height: @40px;}
+        }
+        .multipic{ position: absolute;bottom:@20px;right: @20px;font-size: @30px;color: #007ACC}
+    }
+  }
 </style>
 <template>
   <div class="list" ref="list">
-    <!-- <ul>
-        <li>
-            <a href="">aaaa</a>
-        </li>
-    </ul> -->
-    <scroll ref="scroll" :data="items" :scrollbar="scrollbarObj" :pullDownRefresh="pullDownRefreshObj" :pullUpLoad="pullUpLoadObj"
+    <scroll ref="scroll" :data="stories" :scrollbar="scrollbarObj" :pullDownRefresh="pullDownRefreshObj" :pullUpLoad="pullUpLoadObj"
               :startY="parseInt(startY)" @pullingDown="onPullingDown" @pullingUp="onPullingUp">
         <swipe></swipe>
-      </scroll>
+        <ul>
+            <li class="list-item" v-for="(item,index) in stories" :key="index" @click="viewDetail(item.id)">
+                <img :src="attachImageUrl(item.images[0])" :alt="item.title">
+                <div class="list-item-title">
+                    <h2>{{item.title}}</h2>
+                </div>
+                <i class="iconfont icon-images multipic" v-if="item.multipic"></i>
+            </li>
+        </ul>
+    </scroll>
   </div> 
 </template>
 
-<script>
+<script type="text/ecmascript-6">
+import axios from 'axios';
+import moment from 'moment';
+import {go} from '../actions';
 import Swipe from '../components/Swipe';
-import Scroll from '../components/scroll/scroll.vue'
-const _data = [
-    '我是第 1 行',
-    '我是第 2 行',
-    '我是第 3 行',
-    '我是第 4 行',
-    '我是第 5 行',
-    '我是第 6 行',
-    '我是第 7 行',
-    '我是第 8 行',
-    '我是第 9 行',
-    '我是第 10 行',
-    '我是第 11 行',
-    '我是第 12 行',
-    '我是第 13 行',
-    '我是第 14 行',
-    '我是第 15 行',
-    '我是第 16 行',
-    '我是第 17 行',
-    '我是第 18 行',
-    '我是第 19 行',
-    '我是第 20 行'
-  ]
+import Scroll from '../components/scroll/scroll.vue';
 export default {
   data() {
-    return {
+      return {
         scrollbar: true,
         scrollbarFade: true,
         pullDownRefresh: true,
@@ -54,88 +52,99 @@ export default {
         pullUpLoadMoreTxt: '加载更多',
         pullUpLoadNoMoreTxt: '没有更多数据了',
         startY: 0,
-        items: _data,
-        itemIndex: _data.length
-    }
+        stories:[],
+        dateStr:new Date(),
+        times:-1
+      }
   },
+// ******** 这里不知道哪里有问题，导致页面 vscode 无法自动提示代码了
+  components:{
+    Scroll,
+    Swipe
+  },
+//   ******
   watch: {
-    scrollbarObj() {
-      this.rebuildScroll()
+      scrollbarObj() {
+        this.rebuildScroll()
+      },
+      pullDownRefreshObj() {
+        this.rebuildScroll()
+      },
+      pullUpLoadObj() {
+        this.rebuildScroll()
+      },
+      startY() {
+        this.rebuildScroll()
+      }
     },
-    pullDownRefreshObj() {
-      this.rebuildScroll()
-    },
-    pullUpLoadObj() {
-      this.rebuildScroll()
-    },
-    startY() {
-      this.rebuildScroll()
-    }
-  },
-  computed: {
-    scrollbarObj: function () {
-      return this.scrollbar ? {fade: this.scrollbarFade} : false
-    },
-    pullDownRefreshObj: function () {
+    computed: {
+      scrollbarObj: function () {
+        return this.scrollbar ? {fade: this.scrollbarFade} : false
+      },
+      pullDownRefreshObj: function () {
         return this.pullDownRefresh ? {
-            threshold: parseInt(this.pullDownRefreshThreshold),
-            stop: parseInt(this.pullDownRefreshStop)
+          threshold: parseInt(this.pullDownRefreshThreshold),
+          stop: parseInt(this.pullDownRefreshStop)
         } : false
-    },
-    pullUpLoadObj: function () {
+      },
+      pullUpLoadObj: function () {
         return this.pullUpLoad ? {threshold: parseInt(this.pullUpLoadThreshold), txt: {more: this.pullUpLoadMoreTxt, noMore: this.pullUpLoadNoMoreTxt}} : false
-    }
-  },
-  components: {
-    Scroll,Swipe
-  },
-  mounted(){
-    this.$refs.list.style.height = window.screen.height+'px';
-  },
-  created() {
-      
-  },
-  methods: {
-    onPullingDown() {
-        // 模拟更新数据
-        console.log('pulling down and load data')
-        setTimeout(() => {
-          if (Math.random() > 0.5) {
-            // 如果有新数据
-            this.items.unshift('我是新数据: ' + +new Date())
-          } else {
-            // 如果没有新数据
-            this.$refs.scroll.forceUpdate()
-          }
-        }, 1000)
+      }
     },
-    onPullingUp() {
-        // 更新数据
-        console.log('pulling up and load data')
-        setTimeout(() => {
-          if (Math.random() > 0.5) {
-            // 如果有新数据
-            let newPage = [
-              '我是第 ' + ++this.itemIndex + ' 行',
-              '我是第 ' + ++this.itemIndex + ' 行',
-              '我是第 ' + ++this.itemIndex + ' 行',
-              '我是第 ' + ++this.itemIndex + ' 行',
-              '我是第 ' + ++this.itemIndex + ' 行'
-            ]
-
-            this.items = this.items.concat(newPage)
-          } else {
-            // 如果没有新数据
-            this.$refs.scroll.forceUpdate()
-          }
-        }, 1000)
+    methods:{
+        // 获取最新新闻数据列表
+        fetchData() {
+            axios.get('api/news/latest')
+            .then(response => {
+                // 初始化新闻内容和id数组，并添加进state
+                this.stories = response.data.stories;
+                console.log(this.stories)
+            })
+            .catch(error => {
+                console.log(error);
+            });
+        },
+        			// 修改图片链接
+      attachImageUrl: function(srcUrl) {
+        if (srcUrl !== undefined) {
+          return srcUrl.replace(/http\w{0,1}:\/\/p/g, 'https://images.weserv.nl/?url=p');
+        }
+      },
+      // 跳转到对应id的文章详情页
+    viewDetail: function(id) {
+        go({ name: 'detail', params: { id: id } });
     },
-    rebuildScroll() {
-        this.nextTick(() => {
-            this.$refs.scroll.destroy()
-            this.$refs.scroll.initScroll()
+    // 根据日期获取更多新闻数据
+    fetchMoreData: function() {
+        this.dateStr = moment().add(this.times,'days').format('YYYYMMDD');
+        axios.get('api/news/before/' + this.dateStr)
+        .then(response => {
+            // 合并数据
+            this.stories = [...this.stories,...response.data.stories];
+            this.times-=1;
         })
+        .catch(error => {
+            console.log(error);
+        });
+    },
+      onPullingDown() {
+        // 模拟更新数据
+        this.fetchData();
+      },
+      onPullingUp() {
+        // 更新数据
+        this.fetchMoreData();
+      },
+      rebuildScroll() {
+        Vue.nextTick(() => {
+          this.$refs.scroll.destroy()
+          this.$refs.scroll.initScroll()
+        })
+      }
+    },
+    created(){
+        this.fetchData();
+        console.log(moment().add(-1,'days').format('YYYYMMDD'));
     }
-  }
-};
+}
 </script>

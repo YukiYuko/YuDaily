@@ -40,7 +40,8 @@ export default {
 </script>
 
 <style lang="less">
-.child-view{ transition: all .8s cubic-bezier(.55,0,.1,1);position: absolute;width: 100%;}
+#app{ height: 100%;}
+.child-view{ transition: all .8s cubic-bezier(.55,0,.1,1);position: absolute;width: 100%;height: 100%;}
 .slide-left-enter, .slide-right-leave-active {
   opacity: 0;
   -webkit-transform: translate(50px, 0);
