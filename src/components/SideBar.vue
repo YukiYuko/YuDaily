@@ -3,9 +3,12 @@
 .sidebar{ 
     background-color: #232A30;position: fixed;height: 100%;z-index: 2;
     width: @440px;
+    transform: translateX(-@440px);
+    transition: all .8s cubic-bezier(.55,0,.1,1);
     .sidebar-head{ 
-        padding: @40px @30px;
-        border-bottom: 1px solid #1B2329;
+        padding: @40px @30px 0 @30px;
+        border-bottom: 1px solid #1B2329;height: 3rem;
+        position: absolute;left: 0;top:0;width: 100%;
         h2{ 
             font-size: @32px;color:#666;
             margin-bottom: @20px;
@@ -22,8 +25,7 @@
     }
     .sidebar-content{
         // overflow: auto;
-        height: 15rem;
-        overflow: hidden;
+        position: absolute;top:3rem;bottom:@100px;width:100%;overflow: hidden;
         ul{ 
             li{ 
                 height: @90px;line-height: @80px;
@@ -42,7 +44,8 @@
         }
     }
     .sidebar-foot{
-        height: @100px;line-height: @100px;position: relative;
+        height: @100px;line-height: @100px;position: absolute;
+        bottom: 0;left: 0;width: 100%;
         padding: 0 @30px;
         a{ 
             font-size: @28px;
@@ -54,7 +57,11 @@
         // }
     }
 }
-.mask{ position: fixed;background: rgba(0,0,0,0.3);left: 0;right: 0;top: 0;bottom: 0;z-index: 1}
+.mask{ position: fixed;background: rgba(0,0,0,0.3);left: 0;right: 0;top: 0;bottom: 0;z-index: 1;display: none;}
+.sidebarBox.on{ 
+    .sidebar{ transform: translateX(0);} 
+    // .mask{ display: block;}
+}
 </style>
 <template>
 <div class="sidebarBox">

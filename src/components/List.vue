@@ -2,6 +2,8 @@
   @import '../assets/base.less';
   .list{ 
       height: 100%;position: relative;
+      &.on{ transform: translateX(@440px);}
+      transition: all .8s cubic-bezier(.55,0,.1,1);
     .list-item{ 
         position: relative;overflow: hidden;
         background-color: #fff;
@@ -98,7 +100,6 @@ export default {
             .then(response => {
                 // 初始化新闻内容和id数组，并添加进state
                 this.stories = response.data.stories;
-                console.log(this.stories)
             })
             .catch(error => {
                 console.log(error);
@@ -144,7 +145,6 @@ export default {
     },
     created(){
         this.fetchData();
-        console.log(moment().add(-1,'days').format('YYYYMMDD'));
     }
 }
 </script>
