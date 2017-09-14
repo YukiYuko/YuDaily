@@ -6,5 +6,8 @@ export default {
     toggleShow:({commit,state})=>{
         commit(types.TOGGLE_SHOW);
     },
-    goBack:()=>router.go(-1)
+    goBack:()=>router.go(-1),
+    set_comments:({commit,state},num)=>{
+        commit(types.SET_COMMENTS,num); 
+    }
 }

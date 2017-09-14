@@ -2,5 +2,6 @@
 export default {
     //菜单显示隐藏
     menuShow:false,
-    //首页顶部控制
+    //评论数量
+    comments:0
 }
