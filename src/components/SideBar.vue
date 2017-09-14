@@ -60,7 +60,7 @@
 .mask{ position: fixed;background: rgba(0,0,0,0.3);left: 0;right: 0;top: 0;bottom: 0;z-index: 1;display: none;}
 .sidebarBox.on{ 
     .sidebar{ transform: translateX(0);} 
-    // .mask{ display: block;}
+    .mask{ display: block;}
 }
 </style>
 <template>
@@ -89,8 +89,12 @@
         <div class="sidebar-content" ref="sidebar_content">
             <ul>
                 <li v-for="item in data" :key="item.id">
-                    <a href="">
-                        <i class="iconfont icon-shouye"  v-if="item.id === -1"></i> 
+                    <router-link :to="'/theme/'+item.id" v-if="item.id != -1">
+                            {{item.name}}
+                        <em class="iconfont icon-you"></em>
+                    </router-link>
+                    <a href="#" v-if="item.id === -1">
+                        <i class="iconfont icon-shouye"></i> 
                             {{item.name}}
                         <em class="iconfont icon-you"></em>
                     </a>
@@ -102,13 +106,14 @@
             <a href="" box="1"><i class="iconfont icon-yejian"></i>夜间</a>
         </div>
     </div>
-    <div class="mask"></div>
+    <div class="mask" @click="toggleShow"></div>
 </div>
 </template>
 
 <script>
 import axios from 'axios';
 import BScroll from 'better-scroll';
+import { mapGetters,mapActions } from 'vuex';
 export default {
   name: 'sidebar',
   data () {
@@ -120,6 +125,7 @@ export default {
       this.fetchData();
   },
   methods:{
+    ...mapActions(['toggleShow']),
     fetchData: function() {
       axios.get('api/themes')
       .then(response => {
@@ -143,6 +149,9 @@ export default {
         console.log(error);
       });
     },
+    showMenu(){
+      this.toggleShow();
+    }
   }
 }
 

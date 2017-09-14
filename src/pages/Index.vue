@@ -1,6 +1,6 @@
 <template>
   <div class="my-index">
-    <header class="head" :class="{on:menuShow}">
+    <header class="head" :class="{on:menuShow,blueColor:top<-1}">
       <div class="btn" @click="showMenu">
           <i></i>
           <i></i>
@@ -9,7 +9,7 @@
       <span>今日新闻</span>
     </header>
     <side-bar :class="{on:menuShow}"></side-bar>
-    <list :class="{on:menuShow}"></list>
+    <list :class="{on:menuShow}" v-on:childscroll="scroll"></list>
   </div>
 </template>
 
@@ -23,6 +23,7 @@ export default {
   data() {
     return {
       comments: [],
+      top:0
     }
   },
   computed: {
@@ -38,6 +39,9 @@ export default {
     ...mapActions(['toggleShow']),
     showMenu(){
       this.toggleShow();
+    },
+    scroll(val){
+      this.top = val;
     }
   }
 };
@@ -48,6 +52,7 @@ export default {
 .head{ height: @80px;width: 100%;position: fixed;left: 0;top: 0;z-index: 1;padding: 0 @30px;font-size: @40px;
 transition: all .8s cubic-bezier(.55,0,.1,1);
   &.on{ transform: translateX(@440px)}
+  &.blueColor{ background-color: #169FE6;}
 }
 .head span{ position: absolute;height: 100%;line-height: @80px;top: 0;text-align: center;color: #fff;
 transform: translateX(-50%);left: 50%;}

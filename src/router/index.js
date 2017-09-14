@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Index from '../pages/Index'
 import Detail from '../pages/Detail'
+import Theme from '../pages/Theme'
 
 Router.prototype.goBack = function () {
   this.isBack = true
@@ -21,6 +22,11 @@ export default new Router({
       path: '/detail/:id',
       name: 'detail',
       component: Detail
+    },
+    {
+      path: '/theme/:id',
+      name: 'theme',
+      component: Theme
     }
   ]
 })

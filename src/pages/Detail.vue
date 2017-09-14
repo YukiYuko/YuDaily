@@ -12,7 +12,7 @@
 </template>
 <script>
 import axios from 'axios';
-import FootBar from '../components/FootBar.vue'
+import FootBar from '../components/FootBar.vue';
 export default {
   data() {
     return {

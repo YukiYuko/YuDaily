@@ -12,7 +12,7 @@
 <template>
   <div class="foot">
     <div class="footBar">
-      <router-link to="/"><i class="iconfont icon-zuo"></i></router-link>
+      <a @click="goBack"><i class="iconfont icon-zuo"></i></a>
       <router-link to=""><i class="iconfont icon-you"></i></router-link>
       <router-link to=""><i class="iconfont icon-zan"></i> <em>188</em> </router-link>
       <router-link to=""><i class="iconfont icon-fenxiang"  @click="show"></i></router-link>
@@ -26,6 +26,8 @@
 
 <script>
 import Share from '../components/Share.vue'
+import {go,goBack} from '../actions';
+import { mapActions } from 'vuex'
 export default {
   data() {
     return {
@@ -39,6 +41,7 @@ export default {
     
   },
   methods: {
+    ...mapActions(['goBack']),
     show(){
       this.popupVisible = !this.popupVisible;
       console.log(this.popupVisible);
