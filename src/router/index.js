@@ -4,6 +4,7 @@ import Index from '../pages/Index'
 import Detail from '../pages/Detail'
 import Theme from '../pages/Theme'
 import Comment from '../pages/Comment'
+import Editors from '../pages/Editors'
 
 Router.prototype.goBack = function () {
   this.isBack = true
@@ -33,6 +34,11 @@ export default new Router({
       path: '/comment/:id',
       name: 'comment',
       component: Comment
+    },
+    {
+      path: '/editors/:id',
+      name: 'editors',
+      component: Editors
     }
   ]
 })

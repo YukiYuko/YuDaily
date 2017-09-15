@@ -42,9 +42,9 @@
         </router-link>
         <mt-button slot="right"><i class="iconfont icon-jia"></i></mt-button>
     </mt-header>
-    <div class="mainEdit">
+    <div class="mainEdit" @click="go({ name: 'editors', params: { id: $route.params.id } })">
         <span>主编 </span>
-        <a href="" v-for="(item,index) in data.editors" :key="index"><img :src="attachImageUrl(item.avatar)" :alt="item.name"></a>
+        <a v-for="(item,index) in data.editors" :key="index"><img :src="attachImageUrl(item.avatar)" :alt="item.name"></a>
     </div>
     <div class="theme-list">
         <ul>
@@ -63,12 +63,15 @@
 import axios from 'axios';
 import Scroll from '../components/scroll/scroll';
 import {go} from '../actions';
+import { mapGetters,mapActions } from 'vuex'
 export default {
   data() {
     return {
-      data: [],
-      editorIds: []
+      data: []
     }
+  },
+  computed: {
+      ...mapGetters(['params'])
   },
   components: {
     Scroll
@@ -77,15 +80,14 @@ export default {
     this.fetchData();
   },
   methods: {
+    ...mapActions(['set_editors','go']),
     // 获取指定id主题下的数据
     fetchData() {
       let id = this.$route.params.id;
       axios.get('api/theme/' + id)
         .then(response => {
           this.data = response.data;
-          this.data.editors.map((item) => {
-            this.editorIds.push(item.id);
-          });
+          this.set_editors(response.data.editors);
       });
     },
     // 修改图片链接

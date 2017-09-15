@@ -13,6 +13,7 @@
     "animate.css": "^3.5.2",
     "axios": "^0.16.2",
     "better-scroll": "^1.2.6",
+    "jparticles": "^2.0.1",
     "less": "^2.7.2",
     "less-loader": "^4.0.5",
     "mint-ui": "^2.2.9",

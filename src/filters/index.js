@@ -11,7 +11,7 @@ const attachImageUrl = (url) =>{
 }
 
 // 日期过滤器
-const commonDate = (date) => moment(date).format('YYYY-MM-DD hh:ss')
+const commonDate = (date) => moment(date).format('MM-DD hh:ss')
 
 
 export default {
