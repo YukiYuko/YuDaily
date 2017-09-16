@@ -12,7 +12,7 @@
     }
   }
   .editorDetail{ width: 100%;height: 100%;background-color: #fff;}
-  .demo{ height: 3rem;width: 3rem}
+  #demo{ height: @400px;;width: 100%;background-color: #27C9E5;}
 }
 </style>
 
@@ -24,7 +24,7 @@
         </a>
     </mt-header>
     <ul>
-      <li flex v-for="(item,index) in data" :key="index" @click="show">
+      <li flex v-for="(item,index) in data" :key="index" @click="show(item.id)">
         <img :src="attachImageUrl(item.avatar)" :alt="item.name">
         <div flex box="1">
           <div box="1">
@@ -41,8 +41,10 @@
             <mt-button icon="back">返回</mt-button>
         </a>
       </mt-header>
-      <div class="demo"></div>
+      <!-- <div id="demo"></div> -->
+      <div class="editor-mess" v-html="detail"></div>
     </mt-popup>
+    
   </div>
 </template>
 
@@ -57,7 +59,8 @@ export default {
   data() {
     return {
       data: [],
-      popupVisible:false
+      popupVisible:false,
+      detail:null
     }
   },
   computed: {
@@ -81,22 +84,41 @@ export default {
           console.log(this.data)
       });
     },
-    show(){
+    show(editorId){
       this.popupVisible = true;
-      if(this.particle){
-        return;
-      }
-      this.particle = new JParticles.particle(".demo");
-      
-    }
+      this.fetchDataDetail(editorId);
+      // if(this.particle){
+      //   return;
+      // }
+      // setTimeout(()=>{
+      //   this.particle = new JParticles.wave('#demo', {
+      //           num: 3,
+      //           // 不绘制边框
+      //           line: false,
+      //           // 填充
+      //           fill: true,
+      //           // 填充颜色
+      //           fillColor: ['rgba(255,255,255,0.8)','rgba(255,255,255,0.5)','rgba(255,255,255,0.2)'],
+      //           offsetLeft: [5, 1, 0],
+      //           offsetTop: .65,
+      //           // 三条线依次的波峰高度
+      //           crestHeight: [8, 10, 18],
+      //           rippleNum: 1,
+      //           speed: .05
+      //       });
+      // },20);
+    },
     // 或许指定id主题下的编辑信息
-    // fetchData() {
-    //   axios.get('api/editor/' + this.$route.params.editorId + '/profile-page/ios')
-    //     .then(response => {
-    //       response.data = this.attachBodyContent(response.data);
-    //       this.data = response.data;
-    //     });
-    // },
+    fetchDataDetail(editorId) {
+      axios.get('api/editor/' + editorId + '/profile-page/ios')
+        .then(response => {
+          this.detail = this.attachBodyContent(response.data);
+        });
+    },
+    // 修改返回数据中的body中的图片链接
+    attachBodyContent: function(body) {
+      return body.replace(/src="http\w{0,1}:\/\//g, 'src="https://images.weserv.nl/?url=');
+    }
   }
 };
 </script>
