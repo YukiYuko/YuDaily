@@ -13,7 +13,7 @@
   <div class="foot">
     <div class="footBar">
       <a @click="goBack"><i class="iconfont icon-zuo"></i></a>
-      <router-link to=""><i class="iconfont icon-you"></i></router-link>
+      <a @click="nextNews"><i class="iconfont icon-you"></i></a>
       <router-link to=""><i class="iconfont icon-zan"></i> <em>{{zan}}</em> </router-link>
       <router-link to=""><i class="iconfont icon-fenxiang"  @click="show"></i></router-link>
       <router-link :to="'/comment/'+$route.params.id"><i class="iconfont icon-pinglun"> <span>{{comments}}</span></i></router-link>
@@ -37,8 +37,12 @@ export default {
       discuss:0
     }
   },
+  watch: {
+    // 如果路由有变化，会再次执行该方法
+    '$route': 'reloadId'
+  },
   computed: {
-    ...mapGetters(['comments'])
+    ...mapGetters(['comments','next'])
   },
   components: {
     Share
@@ -47,7 +51,7 @@ export default {
     this.fetchStoryExtra();
   },
   methods: {
-    ...mapActions(['goBack','set_comments']),
+    ...mapActions(['goBack','set_comments','go','get_next_news']),
     // 获取新闻额外信息
     fetchStoryExtra: function() {
       let id = this.$route.params.id;
@@ -55,6 +59,7 @@ export default {
       .then(response => {
         this.zan = response.data.popularity;
         this.set_comments(response.data.comments);
+        this.get_next_news(id);
       })
       .catch(error => {
         console.log(error);
@@ -67,6 +72,14 @@ export default {
     // 隐藏分享组件
     hideMenu: function() {
       this.popupVisible = false;
+    },
+    nextNews(){
+      go({ name: 'detail', params: { id: this.next } });
+    },
+    // 刷新路由属性中的id，重载页面
+    reloadId: function() {
+      this.$emit('reloadId');
+      this.fetchStoryExtra();
     },
   }
 };

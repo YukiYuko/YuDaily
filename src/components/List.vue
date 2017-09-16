@@ -52,6 +52,7 @@ import {go} from '../actions';
 import filters from '../filters';
 import Swipe from '../components/Swipe';
 import Scroll from '../components/scroll/scroll';
+import { mapGetters,mapActions } from 'vuex'
 export default {
   data() {
       return {
@@ -107,12 +108,15 @@ export default {
     },
     methods:{
         ...filters,
+        ...mapActions(['set_ids']),
         // 获取最新新闻数据列表
         fetchData() {
             axios.get('api/news/latest')
             .then(response => {
                 // 初始化新闻内容和id数组，并添加进state
                 this.stories = response.data.stories;
+                let list = this.stories.map((value)=>value.id);
+                this.set_ids(list);
             })
             .catch(error => {
                 console.log(error);
@@ -134,6 +138,8 @@ export default {
         axios.get('api/news/before/' + this.dateStr)
         .then(response => {
             // 合并数据
+            let list = response.data.stories.map((value)=>value.id);
+            this.set_ids(list);
             this.stories = [...this.stories,{date:moment(response.data.date).format('YYYY-MM-DD')},...response.data.stories];
             this.times-=1;
         })

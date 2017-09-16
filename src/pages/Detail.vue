@@ -7,12 +7,13 @@
     </div>
     <div class="detail-from"></div>
     <div class="detail-body" v-html="this.data.body"></div>
-    <foot-bar></foot-bar>  
+    <foot-bar @reloadId="fetchData"></foot-bar>  
   </div>
 </template>
 <script>
 import axios from 'axios';
 import FootBar from '../components/FootBar.vue';
+import { mapGetters,mapActions } from 'vuex'
 export default {
   data() {
     return {
@@ -26,6 +27,7 @@ export default {
     this.fetchData();
   },
   methods: {
+    ...mapActions(['get_next_news']),
     // 获取路由参数上的id新闻具体内容
     fetchData: function() {
       // 获得新闻id
@@ -34,7 +36,6 @@ export default {
       .then(response => {
         response.data.body = this.attachBodyContent(response.data.body);
         this.data = response.data;
-        console.log(this.data);
       })
       .catch(error => {
         console.log(error);

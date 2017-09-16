@@ -19,5 +19,13 @@ export default {
     //设置editors
     set_editors:({commit,state},list)=>{
         commit(types.SET_LIST,list)
+    },
+    //设置所有文章的ID
+    set_ids:({commit,state},list)=>{
+        commit(types.SET_IDS,list)
+    },
+    //获取下一篇文章
+    get_next_news:({commit,state},id)=>{
+        commit(types.GET_NEXT_NEWS,id)
     }
 }

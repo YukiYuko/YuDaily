@@ -5,5 +5,9 @@ export default {
     //评论数量
     comments:0,
     //主编数据
-    editors:[]
+    editors:[],
+    //所有新闻ID数量
+    ids:[],
+    //下一篇文章的ID
+    next:null
 }
