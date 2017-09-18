@@ -1,15 +1,24 @@
 <template>
   <div class="my-index">
-    <header class="head" :class="{on:menuShow,blueColor:top<-1}">
-      <div class="btn" @click="showMenu">
-          <i></i>
-          <i></i>
-          <i></i>
-      </div>
-      <span>今日新闻</span>
-    </header>
-    <side-bar :class="{on:menuShow}"></side-bar>
-    <list :class="{on:menuShow}" v-on:childscroll="scroll"></list>
+      <transition name="fade">
+        <welcome v-if="isFirst" @hide="hide"></welcome>
+      </transition>  
+      <transition name="fade">
+        <header class="head" :class="{on:menuShow,blueColor:top<-1}" v-if="!isFirst">
+          <div class="btn" @click="showMenu">
+              <i></i>
+              <i></i>
+              <i></i>
+          </div>
+          <span>今日新闻</span>
+        </header>
+      </transition> 
+      <transition name="fade">
+        <side-bar :class="{on:menuShow}" v-if="!isFirst"></side-bar>
+      </transition>
+      <transition name="fade">
+        <list :class="{on:menuShow}" v-on:childscroll="scroll" v-if="!isFirst"></list>
+      </transition>
   </div>
 </template>
 
@@ -17,23 +26,25 @@
 import axios from 'axios';
 import List from '../components/List';
 import SideBar from '../components/SideBar';
+import Welcome from '../components/Welcome';
 import { mapGetters,mapActions } from 'vuex'
 export default {
   name: 'index',
   data() {
     return {
       comments: [],
-      top:0
+      top:0,
+      isFirst:true
     }
   },
   computed: {
     ...mapGetters(['menuShow'])
   },
   components: {
-    List,SideBar
+    List,SideBar,Welcome
   },
   created() {
-
+    
   },
   methods: {
     ...mapActions(['toggleShow']),
@@ -42,6 +53,9 @@ export default {
     },
     scroll(val){
       this.top = val;
+    },
+    hide(){
+      this.isFirst = false;
     }
   }
 };
@@ -65,5 +79,12 @@ transform: translateX(-50%);left: 50%;}
 .head.on .btn i:nth-child(1){ -webkit-transform:rotate(40deg);transform:rotate(40deg)}
 .head.on .btn i:nth-child(2){ opacity:0;}
 .head.on .btn i:nth-child(3){ -webkit-transform:rotate(-40deg);transform:rotate(-40deg)}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active in below version 2.1.8 */ {
+  opacity: 0
+}
 
 </style>
